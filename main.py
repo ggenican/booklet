@@ -1,15 +1,19 @@
-def printCountWords(text):
-    word_count = len(text.split())
+import sys
+from stats import printCountWords
 
-    print(f"{word_count} words found in the document\n")
+def printHeader(book):
+    print("============ BOOKBOT ============")
+    print(f"Analyzing book found at {book}...")
 
+def printFooter():
+    print("============= END ===============")
 
 def printSortedAlphabet(sorted):
     for dict in sorted:
         value = list(dict.values())[0]
         key = list(dict.keys())[0]
 
-        print(f"The '{key}' character was found {value} times")
+        print(f"{key}: {value}")
 
 
 def countCharacters(text):
@@ -26,17 +30,24 @@ def countCharacters(text):
     for char in unique_chars:
         if char.isalpha():
             alphabet.append({char: unique_chars[char]})
-        
+    
+    print("--------- Character Count -------")
     return sorted(alphabet, key=lambda x: list(x.values())[0], reverse=True)
 
 
 def main():
+    if len(sys.argv) <= 1:
+        print("Usage: python3 main.py <path_to_book>")
+        return 1
+
     text = ""
-    with open("books/frankenstein.txt") as f:
+    with open(sys.argv[1]) as f:
         for line in f:
             text += line
 
+    printHeader(sys.argv[1])
     printCountWords(text)
     printSortedAlphabet(countCharacters(text))
+    printFooter()
 
 main()
